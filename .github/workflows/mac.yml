@@ -1,0 +1,16 @@
+name: mac-engines
+on: workflow_dispatch
+jobs:
+  engines:
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: npm install
+      - run: sw_vers && uname -m && ls "/Applications" | grep -i chrome || true
+      - run: npx playwright-core install firefox webkit
+      - run: node engines.mjs macrunner
+      - uses: actions/upload-artifact@v4
+        with: { name: results-mac, path: results-engines-macrunner.json }

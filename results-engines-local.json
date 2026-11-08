@@ -1,0 +1,350 @@
+{
+ "rows": [
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "woolworths-nz",
+   "ok": false,
+   "error": "page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.woolworths.co.nz/shop/browse/meat-"
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "paknsave",
+   "http": 403,
+   "title": "Just a moment...",
+   "ok": false,
+   "n": 0,
+   "error": "captured product search JSON is missing"
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "newworld",
+   "http": 403,
+   "title": "Just a moment...",
+   "ok": false,
+   "n": 0,
+   "error": "no product listing found in captured JSON or DOM"
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "woolworths-au",
+   "http": 403,
+   "title": "Access Denied",
+   "ok": false,
+   "n": 0,
+   "error": "No product tiles with name and price found on listing page"
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "coles-au",
+   "http": 200,
+   "title": "",
+   "ok": false,
+   "n": 0,
+   "error": "no product tiles found on listing page"
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "hacker-news",
+   "http": 200,
+   "title": "Hacker News",
+   "ok": true,
+   "n": 30
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "bbc-news",
+   "http": 200,
+   "title": "BBC News - Breaking news, video and the ",
+   "ok": true,
+   "n": 37
+  },
+  {
+   "label": "local",
+   "engine": "chrome",
+   "id": "github-trending",
+   "http": 200,
+   "title": "Trending repositories on GitHub today · ",
+   "ok": true,
+   "n": 15
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "woolworths-nz",
+   "http": 200,
+   "title": "Buy Steak online at Woolworths NZ",
+   "ok": true,
+   "n": 25
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "paknsave",
+   "http": 200,
+   "title": "Buy Fridge, Deli & Eggs Online | PAK'nSA",
+   "ok": true,
+   "n": 50
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "newworld",
+   "http": 200,
+   "title": "Buy Fresh Milk Online | New World",
+   "ok": true,
+   "n": 24
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "woolworths-au",
+   "http": 200,
+   "title": "Milk | Woolworths",
+   "ok": true,
+   "n": 40
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "coles-au",
+   "http": 200,
+   "title": "Browse Milk | Coles",
+   "ok": true,
+   "n": 61
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "hacker-news",
+   "http": 200,
+   "title": "Hacker News",
+   "ok": true,
+   "n": 30
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "bbc-news",
+   "http": 200,
+   "title": "BBC News - Breaking news, video and the ",
+   "ok": true,
+   "n": 37
+  },
+  {
+   "label": "local",
+   "engine": "firefox",
+   "id": "github-trending",
+   "http": 200,
+   "title": "Trending repositories on GitHub today · ",
+   "ok": true,
+   "n": 15
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "woolworths-nz",
+   "http": 200,
+   "title": "Buy Steak online at Woolworths NZ",
+   "ok": true,
+   "n": 25
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "paknsave",
+   "http": 200,
+   "title": "Buy Fridge, Deli & Eggs Online | PAK'nSA",
+   "ok": true,
+   "n": 50
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "newworld",
+   "http": 200,
+   "title": "Buy Fresh Milk Online | New World",
+   "ok": true,
+   "n": 24
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "woolworths-au",
+   "http": 200,
+   "title": "Milk | Woolworths",
+   "ok": true,
+   "n": 47
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "coles-au",
+   "http": 200,
+   "title": "Browse Milk | Coles",
+   "ok": true,
+   "n": 61
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "hacker-news",
+   "http": 200,
+   "title": "Hacker News",
+   "ok": true,
+   "n": 30
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "bbc-news",
+   "http": 200,
+   "title": "BBC News - Breaking news, video and the ",
+   "ok": true,
+   "n": 37
+  },
+  {
+   "label": "local",
+   "engine": "webkit",
+   "id": "github-trending",
+   "http": 200,
+   "title": "Trending repositories on GitHub today · ",
+   "ok": true,
+   "n": 15
+  }
+ ],
+ "fps": {
+  "chrome": {
+   "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+   "platform": "MacIntel",
+   "vendor": "Google Inc.",
+   "webdriver": true,
+   "languages": [
+    "en-GB",
+    "en-US",
+    "en"
+   ],
+   "plugins": 5,
+   "mimeTypes": 2,
+   "hw": 10,
+   "mem": 16,
+   "touch": 0,
+   "uaData": {
+    "brands": [
+     "Not:A-Brand 8",
+     "Chromium 156",
+     "Google Chrome 156"
+    ],
+    "mobile": false,
+    "platform": "macOS"
+   },
+   "screen": [
+    1280,
+    720,
+    24,
+    1
+   ],
+   "inner": [
+    1280,
+    720
+   ],
+   "tz": "Pacific/Auckland",
+   "chromeObj": "object",
+   "chromeRuntime": false,
+   "notif": "default",
+   "webgl": null,
+   "canvasHash": -2051112724,
+   "headlessInUA": true,
+   "tls": {
+    "ja3_hash": "abb1f2ff7c50a288117419acc3906ae5",
+    "ja4": "t13d1517h2_8daaf6152771_cb7bf5808d99",
+    "http_version": "h2"
+   }
+  },
+  "firefox": {
+   "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:132.0) Gecko/20100101 Firefox/132.0",
+   "platform": "MacIntel",
+   "vendor": "",
+   "webdriver": true,
+   "languages": [
+    "en-US",
+    "en"
+   ],
+   "plugins": 0,
+   "mimeTypes": 0,
+   "hw": 10,
+   "touch": 0,
+   "uaData": null,
+   "screen": [
+    1280,
+    720,
+    24,
+    1
+   ],
+   "inner": [
+    1280,
+    720
+   ],
+   "tz": "Pacific/Auckland",
+   "chromeObj": "undefined",
+   "chromeRuntime": false,
+   "notif": "default",
+   "webgl": [
+    "Apple",
+    "Apple M1, or similar"
+   ],
+   "canvasHash": 708704743,
+   "headlessInUA": false,
+   "tls": {
+    "ja3_hash": "2d692a4485ca2f5f2b10ecb2d2909ad3",
+    "ja4": "t13d1716h2_5b57614c22b0_eeeea6562960",
+    "http_version": "h2"
+   }
+  },
+  "webkit": {
+   "ua": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.2 Safari/605.1.15",
+   "platform": "MacIntel",
+   "vendor": "Apple Computer, Inc.",
+   "webdriver": true,
+   "languages": [
+    "en-NZ"
+   ],
+   "plugins": 5,
+   "mimeTypes": 2,
+   "hw": 8,
+   "touch": 0,
+   "uaData": null,
+   "screen": [
+    1280,
+    720,
+    24,
+    1
+   ],
+   "inner": [
+    1280,
+    720
+   ],
+   "tz": "Pacific/Auckland",
+   "chromeObj": "undefined",
+   "chromeRuntime": false,
+   "notif": "default",
+   "webgl": [
+    "Apple Inc.",
+    "Apple GPU"
+   ],
+   "canvasHash": -780838603,
+   "headlessInUA": false,
+   "tls": {
+    "ja3_hash": "ecdf4f49dd59effc439639da29186671",
+    "ja4": "t13d2013h2_a09f3c656075_7f0f34a4126d",
+    "http_version": "h2"
+   }
+  }
+ }
+}

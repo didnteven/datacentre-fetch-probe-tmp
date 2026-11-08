@@ -1,0 +1,182 @@
+{
+ "coverage": [
+  {
+   "cat": "news",
+   "url": "https://www.bbc.com/news"
+  },
+  {
+   "cat": "news",
+   "url": "https://www.rnz.co.nz/news"
+  },
+  {
+   "cat": "news",
+   "url": "https://www.theguardian.com/world"
+  },
+  {
+   "cat": "news",
+   "url": "https://www.nzherald.co.nz/"
+  },
+  {
+   "cat": "news",
+   "url": "https://www.nytimes.com/section/world"
+  },
+  {
+   "cat": "gov/data",
+   "url": "https://www.stats.govt.nz/"
+  },
+  {
+   "cat": "gov/data",
+   "url": "https://www.geonet.org.nz/earthquake"
+  },
+  {
+   "cat": "gov/data",
+   "url": "https://www.usa.gov/"
+  },
+  {
+   "cat": "gov/data",
+   "url": "https://www.rbnz.govt.nz/"
+  },
+  {
+   "cat": "gov/data",
+   "url": "https://www.metservice.com/national"
+  },
+  {
+   "cat": "reference",
+   "url": "https://en.wikipedia.org/wiki/New_Zealand"
+  },
+  {
+   "cat": "reference",
+   "url": "https://news.ycombinator.com/"
+  },
+  {
+   "cat": "reference",
+   "url": "https://github.com/trending"
+  },
+  {
+   "cat": "reference",
+   "url": "https://stackoverflow.com/questions"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.amazon.com/s?k=usb+cable"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.ebay.com/b/Laptops/175672"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.trademe.co.nz/a/marketplace"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.bunnings.co.nz/"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.thewarehouse.co.nz/"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.noelleeming.co.nz/"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.jbhifi.co.nz/"
+  },
+  {
+   "cat": "ecommerce",
+   "url": "https://www.kmart.co.nz/"
+  },
+  {
+   "cat": "travel",
+   "url": "https://www.booking.com/"
+  },
+  {
+   "cat": "travel",
+   "url": "https://www.tripadvisor.com/"
+  },
+  {
+   "cat": "travel",
+   "url": "https://www.expedia.com/"
+  },
+  {
+   "cat": "property/jobs",
+   "url": "https://www.realestate.co.nz/"
+  },
+  {
+   "cat": "property/jobs",
+   "url": "https://www.seek.co.nz/jobs"
+  },
+  {
+   "cat": "property/jobs",
+   "url": "https://www.indeed.com/"
+  },
+  {
+   "cat": "finance",
+   "url": "https://finance.yahoo.com/"
+  },
+  {
+   "cat": "finance",
+   "url": "https://www.nzx.com/"
+  },
+  {
+   "cat": "finance",
+   "url": "https://www.xe.com/currencyconverter/"
+  },
+  {
+   "cat": "finance",
+   "url": "https://www.coindesk.com/"
+  },
+  {
+   "cat": "media/social",
+   "url": "https://www.youtube.com/"
+  },
+  {
+   "cat": "media/social",
+   "url": "https://www.espn.com/"
+  }
+ ],
+ "scripts": [
+  {
+   "id": "woolworths-nz",
+   "url": "https://www.woolworths.co.nz/shop/browse/meat-poultry/beef/steak",
+   "code": "function extract(win) {\n  var out = [];\n  var seen = {};\n\n  function num(v) {\n    var n = typeof v === 'number' ? v : parseFloat(String(v == null ? '' : v).replace(/[^0-9.]/g, ''));\n    return isFinite(n) ? n : null;\n  }\n\n  function fromCapturedJson() {\n    var caps = win.__cap || [];\n    for (var i = 0; i < caps.length; i++) {\n      var c = caps[i];\n      if (!c || !c.body) continue;\n      var j;\n      try { j = JSON.parse(c.body); } catch (e) { continue; }\n      var prods = j && j.data && j.data.My && j.data.My.products;\n      if (!prods || !Array.isArray(prods.results) || prods.results.length === 0) continue;\n\n      for (var k = 0; k < prods.results.length; k++) {\n        var r = prods.results[k];\n        if (!r || !r.productName || seen[r.sku]) continue;\n        seen[r.sku] = true;\n        var v = r.variants && r.variants[0];\n        var vp = v && v.variantPrice;\n        var price = vp ? num(vp.sellingPrice) : null;\n        if (price === null) throw new Error('Missing price for product: ' + r.productName);\n        var unit = null;\n        if (vp && vp.cupPrice != null && vp.cupUnit) {\n          unit = '$' + Number(vp.cupPrice).toFixed(2) + '/' + vp.cupUnit;\n        }\n        out.push({ name: r.productName, price: price, unit_price: unit });\n      }\n      if (out.length) return out;\n    }\n    return null;\n  }\n\n  function fromDom() {\n    var doc = win.document;\n    var tiles = doc.querySelectorAll('.product-grid_productTileCell__QRTtz');\n    var res = [];\n    for (var i = 0; i < tiles.length; i++) {\n      var t = tiles[i];\n      var nameEl = t.querySelector('a.product-tile_description__jfRLo');\n      if (!nameEl) continue; // skeleton/ghost tile\n      var name = nameEl.textContent.trim();\n      if (seen[name]) continue;\n      seen[name] = true;\n      var priceEl = t.querySelector('.product-price_value__ahw_i');\n      var price = priceEl ? num(priceEl.textContent) : null;\n      if (price === null) throw new Error('Missing price for product: ' + name);\n      var cupEl = t.querySelector('.product-cup-price_price__JTQuN > div');\n      var unit = cupEl ? cupEl.textContent.replace(/\\s+/g, '') : null;\n      if (unit && unit.indexOf('/') < 0) unit = null;\n      res.push({ name: name, price: price, unit_price: unit || null });\n    }\n    return res;\n  }\n\n  var fromJsonRes = fromCapturedJson();\n  if (fromJsonRes && fromJsonRes.length) return fromJsonRes;\n\n  var domRes = fromDom();\n  if (domRes.length) return domRes;\n\n  throw new Error('No product listing data found on page');\n}"
+  },
+  {
+   "id": "paknsave",
+   "url": "https://www.paknsave.co.nz/shop/category/featured/pams/fridge-deli--eggs",
+   "code": "function extract(win) {\n  const caps = (win.__cap || []).filter(function (e) {\n    return e && typeof e.url === 'string' && e.url.indexOf('/search/paginated/products') !== -1 && e.body;\n  });\n  if (!caps.length) throw new Error('captured product search JSON is missing');\n\n  const seen = {};\n  const out = [];\n\n  for (const e of caps) {\n    let data;\n    try { data = JSON.parse(e.body); } catch (err) { continue; }\n    const list = Array.isArray(data && data.products) ? data.products : [];\n\n    for (const p of list) {\n      if (!p || !p.productId || seen[p.productId]) continue;\n      seen[p.productId] = true;\n\n      const sp = p.singlePrice;\n      if (!sp || typeof sp.price !== 'number') {\n        throw new Error('missing shelf price for product ' + p.productId);\n      }\n\n      const name = (p.name || '').trim();\n      const brand = (p.brand || '').trim();\n      let full = (brand && name.indexOf(brand) !== 0) ? (brand + ' ' + name) : name;\n      if (p.displayName) full = (full + ' ' + p.displayName).trim();\n      if (!full) throw new Error('missing name for product ' + p.productId);\n\n      const cp = sp.comparativePrice;\n      let unitPrice = null;\n      if (cp && typeof cp.pricePerUnit === 'number' && cp.unitQuantity && cp.unitQuantityUom) {\n        unitPrice = '$' + (cp.pricePerUnit / 100).toFixed(2) + '/' + cp.unitQuantity + cp.unitQuantityUom;\n      }\n\n      out.push({\n        name: full,\n        price: Math.round(sp.price) / 100,\n        unit_price: unitPrice\n      });\n    }\n  }\n\n  if (!out.length) throw new Error('no products found in captured JSON');\n  return out;\n}"
+  },
+  {
+   "id": "newworld",
+   "url": "https://www.newworld.co.nz/shop/category/fridge-deli-and-eggs/milk/fresh-milk",
+   "code": "function extract(win) {\n  function fromCapture() {\n    var cap = win.__cap || [];\n    for (var i = 0; i < cap.length; i++) {\n      var c = cap[i];\n      if (!c || !c.body || typeof c.url !== 'string') continue;\n      if (c.url.indexOf('api-prod.newworld.co.nz') === -1 || c.url.indexOf('/search/') === -1) continue;\n      var data;\n      try { data = JSON.parse(c.body); } catch (e) { continue; }\n      if (!data || !Array.isArray(data.products) || data.products.length === 0) continue;\n      var items = [];\n      for (var j = 0; j < data.products.length; j++) {\n        var p = data.products[j];\n        if (!p || !p.singlePrice || typeof p.singlePrice.price !== 'number') continue;\n        var name = [p.brand, p.name, p.displayName]\n          .filter(function (s) { return s && String(s).trim(); })\n          .join(' ')\n          .replace(/\\s+/g, ' ')\n          .trim();\n        var cp = p.singlePrice.comparativePrice;\n        var unit = null;\n        if (cp && typeof cp.pricePerUnit === 'number' && cp.unitQuantityUom) {\n          unit = '$' + (cp.pricePerUnit / 100).toFixed(2) + '/' +\n            (cp.unitQuantity || 1) + cp.unitQuantityUom;\n        }\n        items.push({\n          name: name,\n          price: Math.round(p.singlePrice.price) / 100,\n          unit_price: unit\n        });\n      }\n      if (items.length) return items;\n    }\n    return null;\n  }\n\n  function fromDom() {\n    var doc = win.document;\n    var all = doc.querySelectorAll('[data-testid]');\n    var items = [];\n    for (var i = 0; i < all.length; i++) {\n      var card = all[i];\n      if (!/^product-\\d+/.test(card.getAttribute('data-testid'))) continue;\n      var titleEl = card.querySelector('[data-testid=\"product-title\"]');\n      if (!titleEl) continue;\n      var subEl = card.querySelector('[data-testid=\"product-subtitle\"]');\n      var dollarsEl = card.querySelector('[data-testid=\"price-dollars\"]');\n      var centsEl = card.querySelector('[data-testid=\"price-cents\"]');\n      var unitEl = card.querySelector('[data-testid=\"non-promo-unit-price\"]');\n      if (!dollarsEl) continue;\n      var dollars = dollarsEl.textContent.replace(/[^\\d]/g, '');\n      var cents = centsEl ? centsEl.textContent.replace(/[^\\d]/g, '') : '00';\n      var price = parseFloat(dollars + '.' + (cents || '00'));\n      if (isNaN(price)) continue;\n      var title = titleEl.textContent.replace(/\\s+/g, ' ').trim();\n      var sub = subEl ? subEl.textContent.replace(/\\s+/g, ' ').trim() : '';\n      items.push({\n        name: (title + (sub ? ' ' + sub : '')).trim(),\n        price: price,\n        unit_price: unitEl && unitEl.textContent.trim() ? unitEl.textContent.trim() : null\n      });\n    }\n    return items.length ? items : null;\n  }\n\n  var result = fromCapture() || fromDom();\n  if (!result) {\n    throw new Error('no product listing found in captured JSON or DOM');\n  }\n  return result;\n}"
+  },
+  {
+   "id": "woolworths-au",
+   "url": "https://www.woolworths.com.au/shop/browse/dairy-eggs-fridge/milk",
+   "code": "function extract(win) {\n  var doc = win.document;\n  var tiles = doc.querySelectorAll('[class*=\"product-tile_component_product-tile__\"]');\n  var products = [];\n\n  function text(el) {\n    return el ? (el.textContent || '').replace(/\\s+/g, ' ').trim() : '';\n  }\n\n  for (var i = 0; i < tiles.length; i++) {\n    var tile = tiles[i];\n\n    // Skip non-product tiles (e.g. content cards) that have no lead price.\n    var priceEl = tile.querySelector('[class*=\"product-tile-price-info_lead-price-value\"]');\n    var nameEl = tile.querySelector('[class*=\"product-tile-name_display-name-truncated\"]');\n    if (!priceEl || !nameEl) continue;\n\n    var priceText = text(priceEl).replace(/[^0-9.]/g, '');\n    var price = parseFloat(priceText);\n    if (isNaN(price)) continue;\n\n    var name = text(nameEl);\n    if (!name) continue;\n\n    var cupEl = tile.querySelector('[class*=\"product-tile-price-info_cup-price\"]');\n    var unitPrice = cupEl ? text(cupEl).replace(/\\s*\\/\\s*/, '/') : null;\n    if (!unitPrice) unitPrice = null;\n\n    products.push({\n      name: name,\n      price: price,\n      unit_price: unitPrice\n    });\n  }\n\n  if (products.length === 0) {\n    throw new Error('No product tiles with name and price found on listing page');\n  }\n\n  return products;\n}"
+  },
+  {
+   "id": "coles-au",
+   "url": "https://www.coles.com.au/browse/dairy-eggs-fridge/milk",
+   "code": "function extract(win) {\n  const doc = win.document;\n\n  // Product tiles only. Ad/CTA tiles (data-testid=\"ad-tile-aem\") are excluded.\n  const tiles = Array.from(doc.querySelectorAll('section[data-testid=\"product-tile\"]'));\n  if (tiles.length === 0) {\n    throw new Error('no product tiles found on listing page');\n  }\n\n  const parsePrice = (text) => {\n    const m = String(text || '').replace(/,/g, '').match(/\\d+(?:\\.\\d+)?/);\n    return m ? parseFloat(m[0]) : NaN;\n  };\n\n  const results = tiles.map((tile, i) => {\n    const titleEl = tile.querySelector('h2.product__title');\n    const name = titleEl ? titleEl.textContent.replace(/\\s+/g, ' ').trim() : '';\n    if (!name) {\n      throw new Error('product tile ' + i + ' is missing a name');\n    }\n\n    const priceEl = tile.querySelector('[data-testid=\"product-pricing\"]');\n    if (!priceEl) {\n      throw new Error('product \"' + name + '\" is missing a shelf price');\n    }\n    const price = parsePrice(priceEl.textContent || priceEl.getAttribute('aria-label'));\n    if (isNaN(price)) {\n      throw new Error('product \"' + name + '\" has an unparseable price');\n    }\n\n    // Unit price lives in .price__calculation_method; the \"| Was $x\" span is excluded.\n    let unit_price = null;\n    const calcEl = tile.querySelector('.price__calculation_method');\n    if (calcEl) {\n      const raw = Array.from(calcEl.childNodes)\n        .filter((n) => n.nodeType === 3)\n        .map((n) => n.textContent)\n        .join('')\n        .replace(/\\s+/g, '')\n        .trim();\n      unit_price = raw || null;\n    }\n\n    return { name, price, unit_price };\n  });\n\n  return results;\n}"
+  },
+  {
+   "id": "hacker-news",
+   "url": "https://news.ycombinator.com/",
+   "code": "function extract(win) {\n  var doc = win.document;\n  var rows = doc.querySelectorAll('tr.athing.submission');\n  if (!rows || rows.length === 0) {\n    throw new Error('no story rows (tr.athing.submission) found on the page');\n  }\n\n  var base = (win.location && win.location.href) || undefined;\n  var out = [];\n\n  for (var i = 0; i < rows.length; i++) {\n    var row = rows[i];\n    var link = row.querySelector('span.titleline > a');\n    if (!link) {\n      throw new Error('story row ' + (row.id || i) + ' is missing its title link');\n    }\n\n    var title = (link.textContent || '').replace(/\\s+/g, ' ').trim();\n    var href = link.getAttribute('href') || '';\n    var url;\n    try {\n      url = base ? new URL(href, base).href : href;\n    } catch (e) {\n      url = href;\n    }\n\n    // The subtext row is the sibling after the athing row; the score sits in it.\n    var scoreEl = null;\n    if (row.id) {\n      scoreEl = doc.getElementById('score_' + row.id);\n    }\n    if (!scoreEl) {\n      var sub = row.nextElementSibling;\n      scoreEl = sub ? sub.querySelector('span.score') : null;\n    }\n\n    var points = 0;\n    if (scoreEl) {\n      var m = (scoreEl.textContent || '').match(/(\\d[\\d,]*)/);\n      if (m) {\n        points = parseInt(m[1].replace(/,/g, ''), 10);\n      }\n    }\n\n    out.push({\n      title: title,\n      url: url,\n      points: points\n    });\n  }\n\n  return out;\n}"
+  },
+  {
+   "id": "bbc-news",
+   "url": "https://www.bbc.com/news",
+   "code": "function extract(win) {\n  const doc = win.document;\n  const base = win.location && win.location.href ? win.location.href : 'https://www.bbc.com/news';\n  const seen = new Set();\n  const results = [];\n\n  const headlines = doc.querySelectorAll('h2[data-testid=\"card-headline\"]');\n  headlines.forEach(h2 => {\n    const title = (h2.textContent || '').replace(/\\s+/g, ' ').trim();\n    if (!title) return;\n\n    const anchor = h2.closest('a[href]');\n    if (!anchor) return;\n\n    let url;\n    try {\n      url = new URL(anchor.getAttribute('href'), base).href;\n    } catch (e) {\n      return;\n    }\n\n    const key = url + '|' + title;\n    if (seen.has(key)) return;\n    seen.add(key);\n\n    results.push({ title, url });\n  });\n\n  if (results.length === 0) {\n    throw new Error('No news headlines found on page');\n  }\n\n  return results;\n}"
+  },
+  {
+   "id": "github-trending",
+   "url": "https://github.com/trending",
+   "code": "function extract(win) {\n  const doc = win.document;\n  const articles = Array.from(doc.querySelectorAll('article.Box-row'));\n  if (articles.length === 0) {\n    throw new Error('no trending repository rows found in DOM');\n  }\n\n  const results = articles.map((article) => {\n    const link = article.querySelector('h2 a[href]');\n    if (!link) {\n      throw new Error('repository link missing in trending row');\n    }\n\n    const href = link.getAttribute('href') || '';\n    const path = href.replace(/^\\/+/, '').split('?')[0].split('#')[0];\n    const parts = path.split('/').filter(Boolean);\n    if (parts.length < 2) {\n      throw new Error('unexpected repository href: ' + href);\n    }\n    const title = parts[0] + '/' + parts[1];\n    const url = new URL('/' + title, win.location && win.location.href ? win.location.href : 'https://github.com').href;\n\n    const todayEl = Array.from(article.querySelectorAll('span'))\n      .find((el) => /stars?\\s+today/i.test(el.textContent || ''));\n    if (!todayEl) {\n      throw new Error('stars today missing for ' + title);\n    }\n    const match = todayEl.textContent.replace(/,/g, '').match(/(\\d+)\\s+stars?\\s+today/i);\n    if (!match) {\n      throw new Error('could not parse stars today for ' + title);\n    }\n    const stars_today = parseInt(match[1], 10);\n\n    return { title, url, stars_today };\n  });\n\n  return results;\n}"
+  }
+ ]
+}
